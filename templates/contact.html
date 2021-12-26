@@ -721,10 +721,12 @@
 
     })
     $('.dialog').click(function () {
+        
         console.log($('.name2').text())
         var value = $('.name2').text()
         var email = localStorage.getItem('email')
         var name = localStorage.getItem('Name')
+
         $.ajax({
             type: 'POST',
             url: '/home/make_contact/',
@@ -733,9 +735,13 @@
         })
         $('.name').html('')
         contact()
+
+        
         // setTimeout(hello,200)
         $('.dialog').css('display', 'none')
+
     })
+    setInterval(hello,1000)
 </script>
 
 </html>
