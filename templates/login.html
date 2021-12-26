@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+{%load static%}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="dash uno"></div>
+        <div class="dash dos"></div>
+        <div class="dash tres"></div>
+        <div class="dash cuatro"></div>
+    </div>
+
+    <div class="wrapper sign" id = 'sign1'>
+
+        <div class="logo"> <img src="{%static 'logo.png'%}" alt="">
+        </div>
+        <div class="text-center mt-4 name"> Just_Chat </div>
+        <form class="p-3 mt-3" action="/sign-up/" id='sign' method="post">
+            {% csrf_token %}
+            <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="text"
+                    name="name" id="name" placeholder="Full Name" required autocomplete="off"> </div>
+            <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="email"
+                    name="email" id="Email" placeholder="Email-Address" pattern="^[a-zA-Z0-9]+@gmail\.com$" required autocomplete="off"> </div>
+            <div class="form-field d-flex align-items-center"> <span class="fas fa-key"></span> <input type="password"
+                    name="password" id="password" placeholder="Password" required> </div> <button type="submit"
+                class="btn mt-3">Submit</button>
+        </form>
+        <div class="text-center fs-6"> <a href="#" id='dologin'>login?</a> </div>
+
+    </div>
+    <div class="wrapper login" id="login1">
+        <div class="login">
+            <div class="logo"> <img src="{%static 'logo.png'%}" alt="">
+            </div>
+            <div class="text-center mt-4 name"> Just_Chat </div>
+            <form class="p-3 mt-3" action="/login-up/" id='login' method="post">
+                {% csrf_token %}
+                <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="email"
+                        name="userName" id="email1" placeholder="Email" pattern="^[a-zA-Z0-9]+@gmail\.com$" required> </div>
+                <div class="form-field d-flex align-items-center"> <span class="fas fa-key"></span> <input
+                        type="password" name="password" id="pwd" placeholder="Password" required> </div> <button type="submit"
+                    class="btn mt-3">Submit</button>
+            </form>
+            <div class="text-center fs-6"> <a href="#" id="dosign">Register?</a> </div>
+        </div>
+    </div>
+
+</body>
+<script>
+
+    $(document).ready(function () {
+        $('#login').submit(function (event) {
+            event.preventDefault()
+            var email = $('#email1').val()
+            var pd = $('#pwd').val()
+            $.ajax({
+                type: "POST",
+                url: '/login-up/',
+                data: { 'email': email, 'password': pd, CSRF: 'getCSRFTokenValue' },
+                dataType: 'text',
+            })
+
+        })
+        $('#login').submit(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/login-up/',
+                success: function (response) {
+                    console.log(response['data'])
+                    // console.log(response['data'])
+                    var name = response['data'][1]
+                    var email = response['data'][2]
+                    var what = response['data'][0]
+                    $('.wrapper').css('opacity', '0.2')
+                    $('.container').css('display', 'flex')
+                    setTimeout(function () {
+                        if (response['data'][0] == true) {
+                            localStorage.setItem('Name', name)
+                            localStorage.setItem('email', email)
+                            location.replace('/home/')
+
+                        }
+                        else {
+
+                            $('#login')[0].reset()
+                            $('.wrapper').css('opacity', '1')
+                            $('.container').css('display', 'none')
+                            alert('Invalid username or password')
+                        }
+
+                    }, 3000)
+
+                }
+            })
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+
+        $('#sign').submit(function (event) {
+            event.preventDefault()
+            
+            var Email = $('#Email').val()
+            var passwd = $('#password').val()
+            var name = $('#name').val()
+            // document.getElementById('sign').reset()
+            $.ajax({
+                type: "POST",
+                url: '/sign-up/',
+                data: { 'email': Email, 'password': passwd, 'name': name, CSRF: 'getCSRFTokenValue' },
+                dataType: 'text',
+                success: function () {
+                    
+                }
+            });
+            setTimeout(() => {
+                $.ajax({
+                    type:'GET',
+                    url:'/sign-up/',
+                    success: function (response) {
+                        data = response['data'][0]
+                        console.log(response)
+                        console.log(data)
+                        if (data=='T') {
+                            $('#sign')[0].reset()
+
+                            alert('Username already exits | Please login instead')
+                        }
+                        else{
+                            $('.sign').css('display', 'none')
+                        }
+                    }
+                })
+            }, 200);
+        })
+    })
+    $('#dologin').click(function () {
+        $('.sign').css('display', 'none')
+
+    })
+    $('#dosign').click(function () {
+        $('.sign').css('display', 'block')
+
+    })
+
+
+
+</script>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+        overflow: hidden;
+    }
+
+    body {
+        background: #ecf0f3
+    }
+
+    .wrapper {
+        max-width: 350px;
+        min-height: 500px;
+        margin: 80px auto;
+        padding: 40px 30px 30px 30px;
+        background-color: #ecf0f3;
+        border-radius: 15px;
+        box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+        position: relative;
+        margin-bottom: 50vh;
+        
+        /* display: none; */
+
+
+    }
+
+    .logo {
+        width: 80px;
+        margin: auto;
+    }
+
+    .logo img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        /* object-fit: fill; */
+        border-radius: 50%;
+
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 18px;
+
+    }
+
+    .wrapper .name {
+        font-weight: 600;
+        font-size: 1.4rem;
+        letter-spacing: 1.3px;
+        padding-left: 10px;
+        color: #555
+    }
+
+    .wrapper .form-field input {
+        width: 100%;
+        display: block;
+        border: none;
+        outline: none;
+        background: none;
+        font-size: 1.2rem;
+        color: #666;
+        padding: 10px 15px 10px 10px
+    }
+
+    .wrapper .form-field {
+        padding-left: 10px;
+        margin-bottom: 20px;
+        border-radius: 20px;
+        box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff
+    }
+
+    .wrapper .form-field .fas {
+        color: #555
+    }
+
+    .wrapper .btn {
+        box-shadow: none;
+        width: 100%;
+        height: 40px;
+        background-color: #03A9F4;
+        color: #fff;
+        border-radius: 25px;
+        box-shadow: 3px 3px 3px #b1b1b1, -3px -3px 3px #fff;
+        letter-spacing: 1.3px;
+
+    }
+
+    .wrapper .btn:hover {
+        background-color: #039BE5
+    }
+
+    .wrapper a {
+        text-decoration: none;
+        font-size: 0.8rem;
+        color: #03A9F4
+    }
+
+    .wrapper a:hover {
+        color: #039BE5
+    }
+
+    @media(max-width: 380px) {
+        .wrapper {
+            margin: 30px 20px;
+            padding: 40px 15px 15px 15px
+        }
+    }
+
+    sign {
+        position: absolute;
+        width: 100vh;
+        height: 100vw;
+        top: 0px;
+        left: 0px;
+    }
+
+    login {
+        position: absolute;
+        width: 100vh;
+        height: 100vw;
+        top: 0px;
+        left: 0px;
+        z-index: 2;
+    }
+</style>
+<style>
+    .container {
+        position: absolute;
+        top: 50%;
+        left: 86%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        display: none;
+        z-index: 5;
+    }
+
+    .dash {
+        margin: 0 15px;
+        width: 35px;
+        height: 15px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        border-radius: 8px;
+        background: #1338dd;
+        box-shadow: 0 0 10px 0 #FECDFF;
+    }
+
+    .uno {
+        margin-right: -18px;
+        transform-origin: center left;
+        animation: spin 3s linear infinite;
+    }
+
+    .dos {
+        transform-origin: center right;
+        animation: spin2 3s linear infinite;
+        animation-delay: .2s;
+    }
+
+    .tres {
+        transform-origin: center right;
+        animation: spin3 3s linear infinite;
+        animation-delay: .3s;
+    }
+
+    .cuatro {
+        transform-origin: center right;
+        animation: spin4 3s linear infinite;
+        animation-delay: .4s;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(360deg);
+        }
+
+        30% {
+            transform: rotate(370deg);
+        }
+
+        35% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin2 {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        20% {
+            transform: rotate(0deg);
+        }
+
+        30% {
+            transform: rotate(-180deg);
+        }
+
+        35% {
+            transform: rotate(-190deg);
+        }
+
+        40% {
+            transform: rotate(-180deg);
+        }
+
+        78% {
+            transform: rotate(-180deg);
+        }
+
+        95% {
+            transform: rotate(-360deg);
+        }
+
+        98% {
+            transform: rotate(-370deg);
+        }
+
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+
+    @keyframes spin3 {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        27% {
+            transform: rotate(0deg);
+        }
+
+        40% {
+            transform: rotate(180deg);
+        }
+
+        45% {
+            transform: rotate(190deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        62% {
+            transform: rotate(180deg);
+        }
+
+        75% {
+            transform: rotate(360deg);
+        }
+
+        80% {
+            transform: rotate(370deg);
+        }
+
+        85% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin4 {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        38% {
+            transform: rotate(0deg);
+        }
+
+        60% {
+            transform: rotate(-360deg);
+        }
+
+        65% {
+            transform: rotate(-370deg);
+        }
+
+        75% {
+            transform: rotate(-360deg);
+        }
+
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+</style>
+
+
+</html>

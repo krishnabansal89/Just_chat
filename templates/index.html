@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hello</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {% csrf_token %}
+</head>
+<body>
+    <div class="container">
+        <div class="form1">
+            <form action="/about/" method="post" id = form2>
+                {% csrf_token %}
+                <input type="text" id='text' name = 'text'>
+
+                <button type="submit" id = 'submit'>Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    async function getjson() {
+        url = 'http://127.0.0.1:8000/about'
+        let data =await fetch(url)
+        var final1 =await data.json()
+        console.log(final1)
+    }
+    $(document).ready(function () {
+        $('#form2').submit(function (event) {
+            event.preventDefault()
+            var name = $('#text').val()
+            document.getElementById('form2').reset()
+            $.ajax({
+                    type: "POST",
+                    url: '/about/',
+                    data: {'name':name ,   CSRF: 'getCSRFTokenValue'},
+                    dataType: 'text',
+                    // csrfmiddlewaretoken: '{{ csrf_token }}',
+                    // success: function(d) {
+                    //         alert(d);
+                    //     }
+                    });
+            
+            getjson()
+                })
+        
+    })
+    
+    
+
+    
+</script>
+</html>

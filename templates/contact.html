@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just_Chat</title>
+    {% load static %}
+    {% csrf_token %}
+    <script src="{% static 'contact.js' %}"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="contact">
+            <div class="profile">
+                <div class="sideimage">
+                    <img src="https://prepsec.org/wp-content/uploads/2017/09/unknown-person-icon-Image-from.png" alt="">
+                </div>
+                <span class="nav">
+
+                </span>
+            </div>
+            <div class="search">
+                <form id="search-form" method="post">
+                    {% csrf_token %}
+                    <label for="search">Search</label>
+                    <input id="search" type="search" pattern=".*\S.*" required autocomplete="off"
+                        placeholder="  enter email address ">
+                    <span class="caret"></span>
+                </form>
+            </div>
+            <div class="dialog">
+                <div class="sideimage">
+                    <img src="https://prepsec.org/wp-content/uploads/2017/09/unknown-person-icon-Image-from.png" alt="">
+                </div>
+                <p class="name2">None</p>
+            </div>
+            <div class="name">
+
+            </div>
+
+        </div>
+        <div class="chat">
+            <div class="msg-area">
+                <!-- <p class="right msg">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum sint ipsam dolores
+                    possimus pariatur nam illo nesciunt amet quam ea! Officia vitae at dolorum temporibus dolor, itaque
+                    beatae velit magni.</p>
+                <p class="left msg">testing</p>
+                <p class="right msg">testing</p>
+                <p class="left msg">testing</p>
+                <p class="right msg">testing</p>
+                <p class="right msg">testing</p>
+                <p class="left msg">testing</p>
+                <p class="right msg">testing</p>
+                <p class="left msg">testing</p> -->
+                <!-- <p class="right msg">testing</p> -->
+
+            </div>
+            <div class="area">
+                <form method="post" id="text">
+                    {% csrf_token %}
+                    <input type="text" id="msg" required>
+                    <input type="submit" id='submit'>
+                    <!-- <img src="{% static 'send.png' %}" alt="" type="submit" id = 'submit'> -->
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+    body {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    :root {
+        --bg: #e3e4e8;
+        --fg: #17181c;
+        --input: #ffffff;
+        --primary: #255ff4;
+        --dur: 1s;
+    }
+
+    .search input {
+        color: var(--fg);
+        font: 1em/1.5 Hind, sans-serif;
+    }
+
+    .search body {
+        background: var(--bg);
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0px;
+        padding: 0px;
+        font-size: calc(16px + (24 - 16)*(100vw - 320px)/(1280 - 320));
+
+    }
+
+    .search form,
+    .search input,
+    .caret {
+        margin: auto;
+    }
+
+    .search form {
+        position: relative;
+        width: 100%;
+        max-width: 17em;
+    }
+
+    .search input,
+    .caret {
+        display: block;
+        transition: all calc(var(--dur) * 0.5) linear;
+    }
+
+    .search input {
+        background: transparent;
+        border-radius: 50%;
+        box-shadow: 0 0 0 0.25em inset;
+        caret-color: var(--primary);
+        width: 2em;
+        height: 2em;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .search input:focus,
+    .search input:valid {
+        background: var(--input);
+        border-radius: 0.25em;
+        box-shadow: none;
+        padding: 0.75em 1em;
+        transition-duration: calc(var(--dur) * 0.25);
+        transition-delay: calc(var(--dur) * 0.25);
+        width: 100%;
+        height: 3em;
+    }
+
+    .search input:focus {
+        animation: showCaret var(--dur) steps(1);
+        outline: transparent;
+    }
+
+    .search input:focus+.caret,
+    .search input:valid+.caret {
+        animation: handleToCaret var(--dur) linear;
+        background: transparent;
+        width: 1px;
+        height: 1.5em;
+        transform: translate(0, -1em) rotate(-180deg) translate(7.5em, -0.25em);
+    }
+
+    .search input::-webkit-search-decoration {
+        -webkit-appearance: none;
+    }
+
+    .search label {
+        color: #e3e4e8;
+        overflow: hidden;
+        position: absolute;
+        width: 0;
+        height: 0;
+    }
+
+    .caret {
+        background: currentColor;
+        border-radius: 0 0 0.125em 0.125em;
+        margin-bottom: -0.6em;
+        width: 0.25em;
+        height: 1em;
+        transform: translate(0, -1em) rotate(-45deg) translate(0, 0.875em);
+        transform-origin: 50% 0;
+    }
+
+    .search {
+        background-color: #303134;
+        width: 100%;
+    }
+
+    /* Dark mode */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg: #17181c;
+            --fg: #e3e4e8;
+            --input: #2e3138;
+            --primary: #5583f6;
+        }
+    }
+
+    /* Animations */
+    @keyframes showCaret {
+        from {
+            caret-color: transparent;
+        }
+
+        to {
+            caret-color: var(--primary);
+        }
+    }
+
+    @keyframes handleToCaret {
+        from {
+            background: currentColor;
+            width: 0.25em;
+            height: 1em;
+            transform: translate(0, -1em) rotate(-45deg) translate(0, 0.875em);
+        }
+
+        25% {
+            background: currentColor;
+            width: 0.25em;
+            height: 1em;
+            transform: translate(0, -1em) rotate(-180deg) translate(0, 0.875em);
+        }
+
+        50%,
+        62.5% {
+            background: var(--primary);
+            width: 1px;
+            height: 1.5em;
+            transform: translate(0, -1em) rotate(-180deg) translate(7.5em, 2.5em);
+        }
+
+        75%,
+        99% {
+            background: var(--primary);
+            width: 1px;
+            height: 1.5em;
+            transform: translate(0, -1em) rotate(-180deg) translate(7.5em, -0.25em);
+        }
+
+        87.5% {
+            background: var(--primary);
+            width: 1px;
+            height: 1.5em;
+            transform: translate(0, -1em) rotate(-180deg) translate(7.5em, 0.125em);
+        }
+
+        to {
+            background: transparent;
+            width: 1px;
+            height: 1.5em;
+            transform: translate(0, -1em) rotate(-180deg) translate(7.5em, -0.25em);
+        }
+    }
+
+
+    .sideimage {
+        float: left;
+        width: 20%;
+        height: 100%;
+        /* background-color: white; */
+
+    }
+
+    .sideimage img {
+        width: 70px;
+        height: 70px;
+        margin-top: 30%;
+        margin-left: 10%;
+        border-radius: 50%;
+
+    }
+
+    ::-webkit-scrollbar {
+        width: 14px;
+        background-color: rgb(255, 255, 255);
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: rgb(255, 255, 255);
+        margin-block: 3px;
+        border-radius: 100vw;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: rgb(200, 200, 200);
+        border: 4px rgb(139, 93, 93)lid;
+        border-radius: 100vw;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: rgb(175, 175, 175);
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+        background-color: rgb(150, 150, 150);
+    }
+
+    .container {
+        height: 100vh;
+        width: 100vw;
+        /* background-color: rgba(241, 241, 241, 0.651); */
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif;
+
+
+    }
+
+    .contact {
+        position: relative;
+        height: 100%;
+        width: 30%;
+        display: inline;
+        float: left;
+        overflow-y: scroll;
+        background-color: #303134;
+    }
+
+    .profile {
+        height: 15%;
+        width: 100%;
+        /* background-color: #045de9;
+        background-image: linear-gradient(315deg, #045de9 0%, #09c6f9 74%); */
+        background-color: #303134;
+        position: sticky;
+        top: 0px;
+        left: 0px;
+    }
+
+    .nav {
+        text-align: center;
+        display: block;
+        padding-top: 40px;
+        border-radius: 30px;
+        font-size: 20px;
+        color: white;
+    }
+
+    .name {
+        margin-top: 30px;
+
+    }
+
+    .name p,
+    .name2 {
+        margin: 10px auto;
+        padding: 10px;
+        width: 90%;
+        height: 10vh;
+        background-color: white;
+        border-radius: 30px;
+        text-align: center;
+        display: block;
+        color: black;
+    }
+
+    /* .name p img{
+        display: inline;
+    } */
+
+
+    .chat {
+        position: relative;
+        height: 100%;
+        width: 70%;
+        float: right;
+        display: inline;
+        display: none;
+        background-color: white;
+
+        /* z-index: -1; */
+    }
+
+    .dialog {
+        /* height: 10vw; */
+        width: 95%;
+        /* border-radius: 20%; */
+        background-color: white;
+        margin: auto;
+        /* padding-top: 50px; */
+        margin-top: 20px;
+        /* display: none; */
+    }
+
+    .dialog p {
+        padding-top: 50px;
+        /* padding: 10px; */
+    }
+
+
+    .area {
+        height: 5vh;
+        width: 100%;
+        margin: auto;
+        padding: 30px;
+        position: absolute;
+        bottom: 0px;
+        background-color: rgba(215, 225, 226, 0.87);
+    }
+
+    .area form {
+        height: 100%;
+        width: 100%;
+        display: flex;
+    }
+
+    .area input {
+        height: 5vh;
+        width: 90%;
+        margin: auto;
+        margin-left: 10px;
+        margin-right: 2px;
+        border-radius: 30px;
+        /* display: inline; */
+        font-size: 30px;
+
+    }
+
+    #submit {
+        background: url("{% static 'send.png' %}");
+        /* background-size: initial; */
+        background-repeat: no-repeat;
+        /* background-size: inherit; */
+        background-size: 50px 50px;
+        /* right: 0; */
+        height: 50px;
+        width: 50px;
+        margin: auto;
+        margin-left: 0;
+        padding: 0;
+        border: hidden;
+        z-index: 2;
+        font-size: 0px;
+        /* display: inline; */
+
+    }
+
+    .msg-area {
+        position: absolute;
+        height: 87vh;
+        width: 100%;
+        overflow-y: scroll;
+        display: block;
+    }
+
+    .msg {
+
+        width: 20vw;
+
+
+        display: block;
+        padding: 10px;
+    }
+
+    .right {
+        float: right;
+        display: block;
+        clear: both;
+        border-radius: 10px 10px 0px 10px;
+        background-color: rgb(174, 174, 211);
+        margin-right: 5px;
+
+    }
+
+    .left {
+        float: left;
+        display: block;
+        clear: both;
+        background-color: plum;
+        border-radius: 10px 10px 10px 0px;
+        margin-left: 5px;
+    }
+</style>
+<script>
+    let ctime = ''
+
+
+    function hello() {
+        $('.name1').click(function () {
+
+            var name = $(this).text()
+            var idd = this.id
+            var email = localStorage.getItem('email')
+            console.log(idd, name)
+            $('.msg-area').html('')
+            ctime = ''
+            $('.chat').css('display', 'inline')
+            $.ajax({
+                type: 'POST',
+                url: 'click/',
+                data: { 'name': name, 'id': idd, 'email': email, CSRF: 'getCSRFTokenValue' },
+                dataType: 'text',
+            })
+            setTimeout(() => {
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'click/',
+                    success: function (response) {
+                        var k = response['data']
+                        var new_email = response['new_email']
+                        localStorage.setItem('new_email', new_email)
+
+                        // console.log(response)
+
+                    }
+                })
+            }, 10);
+            setTimeout(() => {
+                        var email = ''
+                        var new_email = ''
+                        $.ajax({
+                            type: 'POST',
+                            url: '/home/data/',
+
+                            data: { 'email': email, 'new_email': new_email, CSRF: 'getCSRFTokenValue' },
+                            dataType: 'text',
+                        })
+                    }, 100);
+            
+            setTimeout(() => {
+                $('.msg-area').html('')
+                // clearInterval(t)
+                appendMessage('Please enter a messge to Start/Show Chat', 'left')
+            }, 400);       
+            i = 0
+            $('#text').submit(function (event) {
+                if (i == 0) {
+
+                    i = i + 1
+                    event.preventDefault()
+                    $('.msg-area').html('')
+                    console.log('yaar')
+                }
+            })
+        })
+    }
+    setTimeout(hello, 200)
+    function contact() {
+
+        var name = localStorage.getItem('Name')
+        $('.nav').text(name)
+        var email = localStorage.getItem('email')
+        $(document).ready(function () {
+            $.ajax({
+                type: 'POST',
+                url: 'contact/',
+                data: { 'email': email, CSRF: 'getCSRFTokenValue' },
+                dataType: 'text',
+            })
+            // setTimeout(() => {
+            $.ajax({
+                type: 'GET',
+                url: 'contact/',
+                success: function (response) {
+
+                    var k = response['data']
+                    // console.log(k)
+                    for (let i = 0; i < k.length; i++) {
+                        const username = k[i][0];
+                        // console.log(username)
+                        append_name(username, i)
+                    }
+                }
+            })
+            // }, 500);
+        })
+        setTimeout(() => {
+            var email = ''
+            var new_email = ''
+            $.ajax({
+                type: 'POST',
+                url: '/home/data/',
+
+                data: { 'email': email, 'new_email': new_email, CSRF: 'getCSRFTokenValue' },
+                dataType: 'text',
+            })
+        }, 100);
+    }
+    function append_name(name, i) {
+        var html = `
+        <p id="id${i}" class="name1">${name}
+                        <img src="https://ruminate.branhamroys.com/wp-content/uploads/2015/07/unknown.gif" alt=""  class="sideimage">
+                    
+                    
+                 </p>
+        `
+        $('.name')[0].insertAdjacentHTML("beforeend", html);
+
+    }
+    contact()
+
+
+    // $(document).ready(function () {
+        $('.dialog').css('display', 'none')
+
+        $('#text').submit(function (event) {
+            event.preventDefault()
+            // console.log('submit to hogya')
+            var msg = $('#msg').val()
+
+            var email = localStorage.getItem('email')
+            // console.log(msg)
+
+            // appendMessage(name, PERSON_IMG, "right", msgText);
+            var new_email = localStorage.getItem('new_email')
+            var finaltime = new Date()
+            // botResponse();
+            $.ajax({
+                type: 'POST',
+                url: '/home/data/',
+
+                data: { 'email': email, 'msg': msg, 'new_email': new_email, 'time': finaltime, CSRF: 'getCSRFTokenValue' },
+                dataType: 'text',
+            })
+            $('#text')[0].reset();
+
+        })
+
+        // setTimeout(one,2000)
+
+        function test() {
+            $.ajax({
+                type: 'GET',
+                url: '/home/data/',
+                success: function (response) {
+                    var k = response['data']
+                    var email = localStorage.getItem('email')
+                    var new_email = localStorage.getItem('new_email')
+                    var i = 0
+                    // console.log(k)
+                    if (k != '') {
+                        for (let i = 0; i < k.length; i++) {
+                            // for (j in i) {
+                            // console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+                            let message = k[i][1]
+                            let ckemail = k[i][0]
+                            let cktime = k[i][2]
+                            let ckname = k[i][3]
+                            // console.log(ckemail, ckname)
+                            // console.log(message, ckemail, cktime)
+                            if (ckemail.toLowerCase() == email.toLowerCase() && ckname.toLowerCase() == new_email.toLowerCase()) {
+                                if (ctime < cktime) {
+                                    appendMessage(message, "right");
+                                    // console.log(ckname)
+                                    ctime = cktime
+                                }
+                            }
+                            if (ckemail.toLowerCase() == new_email.toLowerCase() && ckname.toLowerCase() == email.toLowerCase()) {
+                                if (ctime < cktime) {
+                                    appendMessage(message, "left");
+                                    ctime = cktime
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+
+        }
+        var t = setInterval(test,500)
+
+    // })
+
+    function appendMessage(msg, side) {
+        var html = `
+                <p class="${side} msg">${msg}</p>
+                `
+        $('.msg-area')[0].insertAdjacentHTML("beforeend", html);
+        $('.msg-area')[0].scrollTop += 500;
+
+    }
+
+    $('#search-form').submit(function () {
+        event.preventDefault()
+        console.log('kuch to hua bidu')
+        var value = $('#search').val()
+        console.log(value)
+        $('.dialog').css('display', 'block')
+
+        $.ajax({
+            type: 'POST',
+            url: '/home/search/',
+            data: { 'name': value, CSRF: 'getCSRFTokenValue' },
+            dataType: 'text',
+        })
+        setTimeout(() => {
+
+            $.ajax({
+                type: 'GET',
+                url: '/home/search/',
+                success: function (response) {
+                    // console.log(response['data'])
+                    var html = `
+                            <div class="dialog">
+                                <div class="sideimage">
+                                    <img src="https://prepsec.org/wp-content/uploads/2017/09/unknown-person-icon-Image-from.png" alt="">
+                                    </div>
+                                    <p class="name2">${response['data'][0]}</p>
+                                    </div>
+                                    `
+                    // $('.dialog').css('display','block')
+                    $('.dialog').html(html)
+
+                }
+            })
+        }, 500);
+    })
+    $('#search').click(function () {
+        // $('.dialog').css('display','block')
+
+    })
+    $('.search').focus(function () {
+        // $('.dialog').css('display','block')
+        // console.log('focus to he')
+
+    })
+    $('.dialog').click(function () {
+        console.log($('.name2').text())
+        var value = $('.name2').text()
+        var email = localStorage.getItem('email')
+        var name = localStorage.getItem('Name')
+        $.ajax({
+            type: 'POST',
+            url: '/home/make_contact/',
+            data: { 'name': value, 'email': email, 'real_name': name, CSRF: 'getCSRFTokenValue' },
+            dataType: 'text',
+        })
+        $('.name').html('')
+        contact()
+        // setTimeout(hello,200)
+        $('.dialog').css('display', 'none')
+    })
+</script>
+
+</html>
