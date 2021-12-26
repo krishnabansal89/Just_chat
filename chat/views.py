@@ -32,7 +32,8 @@ def about(request):
 
 def new(email,passwd,name):
     import csv
-    f = open('./text_file/list.csv','a')
+    f = open('Just_chat/text_file/list.csv','a')
+    
     wr = csv.writer(f)
     fields = ['Name','Email','password']
     row = [name,email,passwd]
@@ -40,7 +41,7 @@ def new(email,passwd,name):
     f.close()
 def check1(email):
     import csv
-    f = open('./text_file/list.csv','r')
+    f = open('Just_chat/text_file/list.csv','r')
     find = False
     r = csv.reader(f)
     for row in r:
@@ -72,7 +73,7 @@ def login(request):
 
 def check(email,pwd):
     import csv
-    f = open('./text_file/list.csv','r')
+    f = open('Just_chat/text_file/list.csv','r')
     find = False
     l=[] 
 
@@ -94,7 +95,7 @@ def loginup(request):
         return HttpResponse()
     if request.method =='GET':
         import csv
-        f = open('./text_file/list.csv','r')
+        f = open('Just_chat/text_file/list.csv','r')
         find = False
         l=[] 
 
@@ -110,12 +111,12 @@ def loginup(request):
 
 
 def file_making(name,content):
-    s = './text_file/info/' + name + '.txt'
+    s = 'Just_chat/text_file/info/' + name + '.txt'
     f = open(s,'w')
     f.write(content)
     f.close()
 def file_reading(name):
-    s = './text_file/info/' + name + '.txt'
+    s = 'Just_chat/text_file/info/' + name + '.txt'
     data = ''
     try:
         f = open(s,'r')
@@ -125,7 +126,7 @@ def file_reading(name):
         pass
     return data
 def clear_file(name):
-    s = './text_file/info/' + name + '.txt'
+    s = 'Just_chat/text_file/info/' + name + '.txt'
     f = open(s,'w')
     f.write('')
     f.close()
