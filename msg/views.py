@@ -99,9 +99,7 @@ def file_contact(name):
 def click(request):
     if request.method=='POST':
         name = request.POST.get('name').lower().strip()
-        # name= ''
-        
-
+        # print(name)
         idd = request.POST.get('id')[2]
         # print('getname',idd,name)
         email1 = request.POST.get('email').lower()
@@ -134,7 +132,7 @@ def click(request):
             data  = []
             import csv
             # print('yaar',new_email1)
-            new_path = 'Just_chat/text_file/'+ email1 +'-'+new_email1+'.csv'
+            new_path = 'Just_chat/text_file/chats'+ email1 +'-'+new_email1+'.csv'
             
             try:
                 f = open(new_path,'r')
@@ -145,10 +143,11 @@ def click(request):
                 # print(data)
                 # print('ready?')
             except:
-                f = open(new_path,'w')
+                # f = open(new_path,'w')
+                pass
             # print('new_email',new_email1)
             new = new_email1
-            new_email1 = ''
+            print('new_new',new)
             return JsonResponse({'data':data,'new_email':new},safe=False)
     return HttpResponse()
 

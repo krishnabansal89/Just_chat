@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="notranslate" translate="no">
 {%load static%}
 
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate" />
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
@@ -31,8 +33,8 @@
             {% csrf_token %}
             <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="text"
                     name="name" id="name" placeholder="Full Name" required autocomplete="off"> </div>
-            <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="email"
-                    name="email" id="Email" placeholder="Email-Address" pattern="^[a-zA-Z0-9]+@gmail\.com$" required autocomplete="off"> </div>
+            <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="text"
+                    name="email" id="Email" placeholder="Email-Address" pattern="[\w]{1,}[\w.+-]{0,}@[\w-]{2,}([.][a-zA-Z]{2,}|[.][\w-]{2,}[.][a-zA-Z]{2,})" required autocomplete="off"> </div>
             <div class="form-field d-flex align-items-center"> <span class="fas fa-key"></span> <input type="password"
                     name="password" id="password" placeholder="Password" required> </div> <button type="submit"
                 class="btn mt-3">Submit</button>
@@ -47,8 +49,8 @@
             <div class="text-center mt-4 name"> Just_Chat </div>
             <form class="p-3 mt-3" action="/login-up/" id='login' method="post">
                 {% csrf_token %}
-                <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="email"
-                        name="userName" id="email1" placeholder="Email" pattern="^[a-zA-Z0-9]+@gmail\.com$" required> </div>
+                <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="text"
+                        name="userName" id="email1" placeholder="Email" pattern="[\w]{1,}[\w.+-]{0,}@[\w-]{2,}([.][a-zA-Z]{2,}|[.][\w-]{2,}[.][a-zA-Z]{2,})" required> </div>
                 <div class="form-field d-flex align-items-center"> <span class="fas fa-key"></span> <input
                         type="password" name="password" id="pwd" placeholder="Password" required> </div> <button type="submit"
                     class="btn mt-3">Submit</button>
@@ -264,7 +266,10 @@
 
     @media(max-width: 380px) {
         .wrapper {
-            margin: 30px 20px;
+            margin: auto 20px;
+            margin-bottom: 50vh;
+
+            
             padding: 40px 15px 15px 15px
         }
     }
@@ -459,6 +464,7 @@
             transform: rotate(-360deg);
         }
     }
+    
 </style>
 
 

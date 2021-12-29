@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="notranslate" translate="no">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate" />
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Just_Chat</title>
@@ -30,8 +32,7 @@
                 <form id="search-form" method="post">
                     {% csrf_token %}
                     <label for="search">Search</label>
-                    <input id="search" type="search" pattern=".*\S.*" required autocomplete="off"
-                        placeholder="  enter email address ">
+                    <input id="search" type="search" pattern="[\w]{1,}[\w.+-]{0,}@[\w-]{2,}([.][a-zA-Z]{2,}|[.][\w-]{2,}[.][a-zA-Z]{2,})" required autocomplete="off" placeholder="  enter email address ">
                     <span class="caret"></span>
                 </form>
             </div>
@@ -47,6 +48,15 @@
 
         </div>
         <div class="chat">
+            <div class="back">
+                <div class="back-image">
+
+                </div>
+                <div class="back-text">
+                    vvbfd
+                </div>
+                <!-- <img src="https://www.pinclipart.com/picdir/middle/544-5440422_back-arrow-icon-transparent-png-clipart-free-download.png" alt=""> -->
+            </div>
             <div class="msg-area">
                 <!-- <p class="right msg">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cum sint ipsam dolores
                     possimus pariatur nam illo nesciunt amet quam ea! Officia vitae at dolorum temporibus dolor, itaque
@@ -65,7 +75,7 @@
             <div class="area">
                 <form method="post" id="text">
                     {% csrf_token %}
-                    <input type="text" id="msg" required>
+                    <input type="text" id="msg" required autocomplete="off">
                     <input type="submit" id='submit'>
                     <!-- <img src="{% static 'send.png' %}" alt="" type="submit" id = 'submit'> -->
 
@@ -316,6 +326,7 @@
         width: 30%;
         display: inline;
         float: left;
+        overflow: hidden;
         overflow-y: scroll;
         background-color: #303134;
     }
@@ -474,18 +485,87 @@
         border-radius: 10px 10px 10px 0px;
         margin-left: 5px;
     }
+    .back{
+        width: 100%;
+        height: 50px;
+        overflow: hidden;
+        /* background-color: black; */
+        margin-left: 0px;
+        
+        background-color: #F7F7F7;
+        display: flex;
+        display: none;
+    }
+    .back-image{
+        height: 50px;
+        width: 50px;
+        /* left: 0px; */
+        /* display: inline-block; */
+        background-image: url('https://www.pinclipart.com/picdir/middle/544-5440422_back-arrow-icon-transparent-png-clipart-free-download.png');
+        background-size: 50px 50px ;
+        background-repeat: no-repeat;
+        /* background-color: white; */
+    }
+    .back-text{
+        /* margin-left: 50px; */
+        /* z-index: 2; */
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 5px;
+        /* display: inline; */
+        /* background-color: #F7F7F7; */
+    }
+    @media (max-width:450px){
+        body{
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+        }
+        .contact{
+
+            width:100vw;
+            height: 100vh;
+            overflow: hidden;
+            /* overflow-y: scroll; */
+        }
+        .chat{
+            width:100%;
+            height: 95%;
+            overflow: hidden;
+            /* overflow-y: scroll; */
+            /* display: none; */
+            
+        }
+        .area input{
+            width: 70%;
+        }
+        .msg{
+            width: 40%;
+        }
+        .msg-area{
+            height: 80vh;
+        }
+        #search{
+            margin-top: 30px;
+        }
+    }
+    
 </style>
 <script>
     let ctime = ''
 
-
+$(document).ready(function () {
+    // localStorage.setItem('new_email','')
     function hello() {
         $('.name1').click(function () {
 
             var name = $(this).text()
             var idd = this.id
             var email = localStorage.getItem('email')
-            console.log(idd, name)
+            // console.log(idd, name)
             $('.msg-area').html('')
             ctime = ''
             $('.chat').css('display', 'inline')
@@ -502,14 +582,18 @@
                     url: 'click/',
                     success: function (response) {
                         var k = response['data']
+                        // console.log('hello ',response)
                         var new_email = response['new_email']
-                        localStorage.setItem('new_email', new_email)
+                        if (typeof new_email!='undefined') {
+                            // console.log('nya email he ye',new_email)
+                            localStorage.setItem('new_email', new_email)
+                        }
 
                         // console.log(response)
 
                     }
                 })
-            }, 10);
+            }, 100);
             setTimeout(() => {
                         var email = ''
                         var new_email = ''
@@ -545,7 +629,7 @@
         var name = localStorage.getItem('Name')
         $('.nav').text(name)
         var email = localStorage.getItem('email')
-        $(document).ready(function () {
+        // $(document).ready(function () {
             $.ajax({
                 type: 'POST',
                 url: 'contact/',
@@ -568,7 +652,7 @@
                 }
             })
             // }, 500);
-        })
+        // })
         setTimeout(() => {
             var email = ''
             var new_email = ''
@@ -609,7 +693,7 @@
             // appendMessage(name, PERSON_IMG, "right", msgText);
             var new_email = localStorage.getItem('new_email')
             var finaltime = new Date()
-            console.log(email,new_email)
+            // console.log(email,new_email)
             // botResponse();
             $.ajax({
                 type: 'POST',
@@ -678,9 +762,9 @@
 
     $('#search-form').submit(function () {
         event.preventDefault()
-        console.log('kuch to hua bidu')
+        // console.log('kuch to hua bidu')
         var value = $('#search').val()
-        console.log(value)
+        // console.log(value)
         $('.dialog').css('display', 'block')
 
         $.ajax({
@@ -740,8 +824,44 @@
         // setTimeout(hello,200)
         $('.dialog').css('display', 'none')
 
+        setInterval(hello,1000)
     })
-    setInterval(hello,1000)
+})
 </script>
+<script>
+    var width = $('.container').css('width')
+    var pixel = parseInt(width.slice(0,width.length-2))
+    if(pixel<450){
+        // $('.chat').css('display','none')
+        // console.log('eee')
+        setTimeout(() => {
+            $('.name1').click(function () {
+                $('.back-text').html('')
+                $('.chat').css('display','inline')
+                $('.contact').css('display','none')
+                // console.log('hhhhhhhhhhhhhhhhhhhhhh')
+                $('.back').css('display','flex')
+                setTimeout(() => {
+                    var email = localStorage.getItem('new_email')
+                    
+                    $('.back-text').html(email)
+                    email = ''
+                }, 500);
+            })
 
+        }, 500);
+        setTimeout(() => {
+            
+            $('.back-image').click(function () {
+                // console.log('jjjjjjjjjjjjgkfhbvsbvjh')
+                $('.chat').css('display','none')
+                $('.contact').css('display','inline')
+                email = ''
+            })
+        }, 500);
+    }
+    
+    // console.log(pixel)
+
+</script>
 </html>
