@@ -134,5 +134,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 django_heroku.settings(locals())
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, './static'),
+    os.path.join(BASE_DIR, 'Just_chat\Static'),
 ]
