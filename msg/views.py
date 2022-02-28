@@ -36,7 +36,7 @@ def data(request):
             # print('email',email,new_email)
             email,new_email = great(email,new_email)
             print(email,new_email)
-            s = 'Just_chat/text_file/chats/' + email + '-' +new_email+'.csv'
+            s = './text_file/chats/' + email + '-' +new_email+'.csv'
             # print('lett seeeee',s)
             f = open(str(s),'r')
             wr = csv.reader(f)
@@ -52,7 +52,7 @@ def enter(email,msg,time,new_email):
     import csv
     email1,new_email1 = great(email,new_email)
     print(email,new_email)
-    s = 'Just_chat/text_file/chats/' + email1 + '-' + new_email1+'.csv'
+    s = './text_file/chats/' + email1 + '-' + new_email1+'.csv'
     f = open(str(s),'a')
 
     w = csv.writer(f)
@@ -81,7 +81,7 @@ def contact(request):
 
 def file_contact(name):
     import csv
-    s = 'Just_chat/text_file/'+name + '-contact.csv'
+    s = './text_file/'+name + '-contact.csv'
     r = []
     try:
         f = open(s,'r')
@@ -106,7 +106,7 @@ def click(request):
         file_making('email2',email1)
         # print('getemail',new_email)
         import csv
-        s = 'Just_chat/text_file/'+email1 + '-contact.csv'
+        s = './text_file/'+email1 + '-contact.csv'
         f = open(s,'r')
         r = csv.reader(f)
         i = 0
@@ -132,7 +132,7 @@ def click(request):
             data  = []
             import csv
             # print('yaar',new_email1)
-            new_path = 'Just_chat/text_file/chats'+ email1 +'-'+new_email1+'.csv'
+            new_path = './text_file/chats'+ email1 +'-'+new_email1+'.csv'
             
             try:
                 f = open(new_path,'r')
@@ -152,12 +152,12 @@ def click(request):
     return HttpResponse()
 
 def file_making(name,content):
-    s = 'Just_chat/text_file/info/' + name + '.txt'
+    s = './text_file/info/' + name + '.txt'
     f = open(s,'w')
     f.write(content)
     f.close()
 def file_reading(name):
-    s = 'Just_chat/text_file/info/' + name + '.txt'
+    s = './text_file/info/' + name + '.txt'
     data = ''
     try:
         f = open(s,'r')
@@ -184,7 +184,7 @@ def search(request):
     if request.method == 'POST':
         name = request.POST.get('name').lower()
         import csv
-        f = open('Just_chat/text_file/list.csv','r')
+        f = open('./text_file/list.csv','r')
         r = csv.reader(f)
         for i in r:
             if len(i)>0:
@@ -195,7 +195,7 @@ def search(request):
                     # print(i[1])
         # print(name)
     if request.method == 'GET':
-        s = 'Just_chat/text_file/info/' + 'local_name' + '.csv'
+        s = './text_file/info/' + 'local_name' + '.csv'
         import csv
         f = open(s,'r')
         r = csv.reader(f)
@@ -210,14 +210,14 @@ def search(request):
     return HttpResponse(request)
 
 def file_making_new(name,content):
-    s = 'Just_chat/text_file/info/' + name + '.csv'
+    s = './text_file/info/' + name + '.csv'
     import csv
     f = open(s,'a')
     r = csv.writer(f)
     r.writerow([content])
     f.close()
 def clear_file(name):
-    s = 'Just_chat/text_file/info/' + name + '.csv'
+    s = './text_file/info/' + name + '.csv'
     import csv
     f = open(s,'w')
     r = csv.writer(f)
@@ -232,9 +232,9 @@ def make_contact(request):
         real_name = request.POST.get('real_name').lower()
         if  new_email != 'undefined':
             # print(new_email)
-            k = 'Just_chat/text_file/list.csv'
-            s= 'Just_chat/text_file/' + email + '-' + 'contact.csv'
-            d = 'Just_chat/text_file/' + new_email + '-' + 'contact.csv'
+            k = './text_file/list.csv'
+            s= './text_file/' + email + '-' + 'contact.csv'
+            d = './text_file/' + new_email + '-' + 'contact.csv'
             import csv
             f = open(k,'r')
             name = ''
